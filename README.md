@@ -1,14 +1,27 @@
 ```markdown
 # Jarvas - Assistente de Voz
 
-Jarvas é um assistente de voz que permite interagir com dataframes pandas usando comandos de voz ou texto.
-Ele utiliza o modelo GPT-4o da OpenAI para processamento de linguagem natural e Whisper para transcrição de áudio.
+Jarvas é um assistente de voz inteligente desenvolvido em Python que utiliza a API da OpenAI.
+Ele permite que você interaja com seus dados de forma fácil e intuitiva.
+Com o Jarvas, você pode usar comandos de voz ou texto para fazer perguntas e obter respostas sobre os dados que você
+carrega no sistema.
 
-## Funcionalidades
+Imagine poder conversar com seu computador para analisar uma planilha de dados, sem precisar escrever códigos complicados.
+Jarvas escuta seus comandos de voz, os transcreve para texto, processa a solicitação usando a API da OpenAI e fornece uma
+resposta imediata.
+Ele pode ler arquivos CSV, responder perguntas sobre os dados e até mesmo falar as respostas para você.
 
-- Interação por Voz: Grave comandos de voz que são transcritos e processados pelo Jarvas.
-- Interação por Texto: Envie comandos de texto diretamente pela interface gráfica.
-- Análise de Dataframes: Carregue arquivos CSV e interaja com os dados usando comandos naturais.
+### Principais Funcionalidades:
+- Interação por Voz: Fale com Jarvas para fazer perguntas sobre seus dados.
+- Interação por Texto: Digite perguntas diretamente na interface gráfica.
+- Análise de Dados: Carregue arquivos CSV e obtenha respostas inteligentes sobre seus dados.
+- Geração de Gráficos: Gere gráficos de barras para visualizar a relação entre duas colunas de dados.
+
+### Exemplos de Uso:
+- Perguntar sobre o número de linhas em uma tabela de dados.
+- Calcular a média de uma coluna de preços.
+- Identificar possíveis anomalias em um conjunto de dados.
+- Gerar um gráfico de barras para visualizar a relação entre duas colunas.
 
 ## Requisitos
 
