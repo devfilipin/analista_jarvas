@@ -1,11 +1,14 @@
 import tkinter as tk  # Importa a biblioteca Tkinter para criar a interface gráfica
 from tkinter import scrolledtext, filedialog, messagebox  # Importa componentes específicos do Tkinter
+from tkinter import simpledialog  # Importa a funcionalidade de diálogos simples do Tkinter
 import threading  # Importa a biblioteca de threading para permitir execução paralela
 from talking_llm import TalkingLLM  # Importa a classe TalkingLLM do módulo talking_llm
+import matplotlib.pyplot as plt  # Importa a biblioteca Matplotlib para criação de gráficos
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg  # Importa funcionalidades para integrar Matplotlib com Tkinter
 
 class JarvasApp:
     def __init__(self, root):
-        self.root = root
+        self.root = root  # Inicializa a janela principal
         self.root.title("Jarvas - Assistente de Voz")  # Define o título da janela
 
         self.talking_llm = TalkingLLM()  # Instancia a classe TalkingLLM
@@ -27,6 +30,10 @@ class JarvasApp:
         # Cria um botão para carregar um novo arquivo CSV
         self.load_file_button = tk.Button(root, text="Carregar CSV", command=self.load_file, font=("Arial", 14))
         self.load_file_button.pack(pady=10)
+
+        # Cria um botão para gerar gráficos
+        self.plot_button = tk.Button(root, text="Gerar Gráfico", command=self.generate_plot, font=("Arial", 14))
+        self.plot_button.pack(pady=10)
 
         self.is_recording = False  # Inicializa o estado de gravação como False
 
@@ -65,6 +72,33 @@ class JarvasApp:
         # Exibe o texto do usuário e a resposta do Jarvas na área de texto
         self.text_area.insert(tk.END, f"Você: {user_input}\n")
         self.text_area.insert(tk.END, f"Jarvas: {jarvas_response}\n")
+
+    def generate_plot(self):
+        # Solicita o nome das colunas para os eixos X e Y
+        x_column = simpledialog.askstring("Entrada", "Digite o nome da coluna para o eixo X:", parent=self.root)
+        y_column = simpledialog.askstring("Entrada", "Digite o nome da coluna para o eixo Y:", parent=self.root)
+        if x_column and y_column:
+            try:
+                df = self.talking_llm.df  # Obtém o dataframe carregado
+                if x_column not in df.columns or y_column not in df.columns:
+                    messagebox.showerror("Erro", f"Coluna '{x_column}' ou '{y_column}' não encontrada no dataframe.")
+                    return
+
+                plt.figure(figsize=(10, 6))  # Define o tamanho do gráfico
+                plt.bar(df[x_column], df[y_column], alpha=0.7)  # Gera um gráfico de barras
+                plt.title(f"Gráfico de {x_column} vs {y_column}")  # Define o título do gráfico
+                plt.xlabel(x_column)  # Define o rótulo do eixo X
+                plt.ylabel(y_column)  # Define o rótulo do eixo Y
+                plt.grid(True)  # Adiciona uma grade ao gráfico
+
+                # Integrar o gráfico com Tkinter
+                figure = plt.gcf()  # Obtém a figura do gráfico atual
+                canvas = FigureCanvasTkAgg(figure, master=self.root)  # Cria um canvas para o gráfico
+                canvas.draw()  # Desenha o gráfico no canvas
+                canvas.get_tk_widget().pack(padx=10, pady=10)  # Exibe o widget do gráfico na janela
+                plt.close()  # Fecha a figura do Matplotlib
+            except Exception as e:
+                messagebox.showerror("Erro", f"Erro ao gerar gráfico: {e}")  # Exibe uma mensagem de erro em caso de exceção
 
 if __name__ == "__main__":
     root = tk.Tk()  # Cria a janela principal
